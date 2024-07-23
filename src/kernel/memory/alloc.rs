@@ -35,6 +35,16 @@ impl Memory {
             0
         }
     }
+    pub fn expand(&mut self, bytes_to_expand: u8) -> u8 {
+        for i in 1..bytes_to_expand {
+            memset(
+                unsafe { self.address.offset(self.bytes as isize + i as isize) },
+                0,
+            );
+        }
+        self.bytes = self.bytes + bytes_to_expand;
+        self.bytes
+    }
 }
 
 pub fn free(mut address: Memory) {
@@ -57,8 +67,8 @@ pub fn alloc(bytes: u8) -> Memory {
             memset(unsafe { address.offset(bytes as isize + 1) }, 0);
 
             unsafe {
-                MEMORY.wrapping_add(1);
-                OLD_MEMORY.wrapping_add(1);
+                MEMORY = MEMORY.wrapping_add(1);
+                OLD_MEMORY = OLD_MEMORY.wrapping_add(1);
 
                 return Memory {
                     address,
@@ -74,8 +84,8 @@ pub fn alloc(bytes: u8) -> Memory {
             memset(unsafe { address.offset(bytes as isize + 1) }, 0);
 
             unsafe {
-                MEMORY.wrapping_add(1);
-                OLD_MEMORY.wrapping_add(1);
+                MEMORY = MEMORY.wrapping_add(1);
+                OLD_MEMORY = OLD_MEMORY.wrapping_add(1);
 
                 return Memory {
                     address,
@@ -90,8 +100,8 @@ pub fn alloc(bytes: u8) -> Memory {
         memset(unsafe { address.offset(bytes as isize + 1) }, 0);
 
         unsafe {
-            MEMORY.wrapping_add(1);
-            OLD_MEMORY.wrapping_add(1);
+            MEMORY = MEMORY.wrapping_add(1);
+            OLD_MEMORY = OLD_MEMORY.wrapping_add(1);
 
             return Memory {
                 address,
