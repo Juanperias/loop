@@ -1,7 +1,13 @@
+use crate::screen::put::COUNTER;
 use core::arch::asm;
 
-pub fn x86_clear() {
+const VGA: *mut u8 = 0xb8000 as *mut u8;
+
+pub fn clear_screen() {
     unsafe {
-        asm!("xor ax, ax", "int 0x10", "mov ax, 0x003", "int 0x10");
+        for i in COUNTER..0 {
+            *VGA.offset(COUNTER as isize) = 0;
+        }
+        COUNTER = 0;
     }
 }

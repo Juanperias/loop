@@ -3,6 +3,7 @@ use crate::memory::memset::memset;
 use crate::modes::panic_mode::enter_panic_mode;
 
 static mut MEMORY: *mut u8 = 0x2000 as *mut u8;
+static mut OLD_MEMORY: *mut u8 = 0x2000 as *mut u8;
 
 pub struct Memory {
     pub address: *mut u8,
@@ -55,14 +56,34 @@ pub fn alloc(bytes: u8) -> Memory {
         unsafe {
             memset(unsafe { address.offset(bytes as isize + 1) }, 0);
 
-            return Memory {
-                address,
-                bytes,
-                freed: false,
-            };
+            unsafe {
+                MEMORY.wrapping_add(1);
+                OLD_MEMORY.wrapping_add(1);
+
+                return Memory {
+                    address,
+                    bytes,
+                    freed: false,
+                };
+            }
         }
     } else if memread(unsafe { address.offset(bytes as isize + 1) }) == 0 {
-        alloc(bytes)
+        unsafe {
+            MEMORY = OLD_MEMORY;
+
+            memset(unsafe { address.offset(bytes as isize + 1) }, 0);
+
+            unsafe {
+                MEMORY.wrapping_add(1);
+                OLD_MEMORY.wrapping_add(1);
+
+                return Memory {
+                    address,
+                    bytes,
+                    freed: false,
+                };
+            }
+        }
     } else {
         // 0 = freed: false,
         // 1 = freed: true,
@@ -70,6 +91,7 @@ pub fn alloc(bytes: u8) -> Memory {
 
         unsafe {
             MEMORY.wrapping_add(1);
+            OLD_MEMORY.wrapping_add(1);
 
             return Memory {
                 address,

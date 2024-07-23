@@ -1,11 +1,9 @@
-use core::arch::asm;
+use crate::screen::{clear::clear_screen, put::puts, put::Color};
 
-extern "C" {
-    fn panic_mode();
-}
+pub fn enter_panic_mode() -> ! {
+    clear_screen();
 
-pub fn enter_panic_mode() {
-    unsafe {
-        panic_mode();
-    }
+    puts("PANIC IN THE SYSTEM", Color::Red);
+
+    loop {}
 }

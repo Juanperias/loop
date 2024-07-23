@@ -16,7 +16,7 @@ all: kernel
 kernel: $(BUILD_DIR)/kernel.bin
 
 $(BUILD_DIR)/kernel.bin: $(OBJECTS_RUST) $(OBJECTS_ASM)
-	$(ELF_LD) -o $(BUILD_DIR)/kernel.bin -Ttext 0x0 --entry=entry $(OBJECTS_ASM) $(OBJECTS_RUST) --oformat binary
+	$(ELF_LD) -o $(BUILD_DIR)/kernel.bin -Ttext 0x1000 --entry=entry $(OBJECTS_ASM) $(OBJECTS_RUST) --oformat binary
 
 $(BUILD_DIR)/kernel/rust/%.o: %.rs always
 	$(RUST) $(RUST_FLAGS) $< -o $@
