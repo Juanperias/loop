@@ -1,6 +1,7 @@
 use crate::asm::inb::inb;
 use crate::asm::outb::outb;
-use crate::screen::put::{putc, Color};
+use crate::screen::clear::clear_one_char;
+use crate::screen::put::{new_line, putc, Color};
 
 #[allow(dead_code)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -9,6 +10,15 @@ pub enum KeyboardState {
     Pressed = 0,
     Released = 1,
     Nothing = 2,
+    Event = 3,
+}
+
+#[allow(dead_code)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(u8)]
+pub enum KeyboardEvents {
+    Backspace = 8,
+    Enter = 13,
 }
 
 pub fn get_char_from_scan_code(scan_code: u8) -> [u8; 2] {
@@ -97,6 +107,9 @@ pub fn get_char_from_scan_code(scan_code: u8) -> [u8; 2] {
         0x39 => [b' ', KeyboardState::Pressed as u8],
         0xB9 => [b' ', KeyboardState::Released as u8],
 
+        0x0E => [8, KeyboardState::Event as u8],
+        0x1C => [13, KeyboardState::Event as u8],
+
         _ => [b'?', KeyboardState::Nothing as u8],
     };
 
@@ -109,6 +122,14 @@ pub fn get_keyboard_pulse() -> [u8; 2] {
     let scan_code = inb(0x60);
 
     let result = get_char_from_scan_code(scan_code);
+
+    if result[1] == KeyboardState::Event as u8 {
+        if result[0] == KeyboardEvents::Enter as u8 {
+            new_line();
+        } else if result[0] == KeyboardEvents::Backspace as u8 {
+            clear_one_char();
+        }
+    }
 
     result
 }
