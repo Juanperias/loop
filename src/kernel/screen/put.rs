@@ -30,6 +30,7 @@ pub fn putc(char: u8, color: Color) {
     unsafe {
         *VGA.offset(COUNTER as isize * 2) = char;
         *VGA.offset(COUNTER as isize * 2 + 1) = color as u8;
+
         COUNTER += 1;
     }
 }

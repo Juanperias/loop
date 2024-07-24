@@ -2,13 +2,15 @@
 #![no_main]
 
 use core::panic::PanicInfo;
+mod asm;
+mod drivers;
 mod fmt;
 mod memory;
 mod modes;
 mod screen;
-
 mod types;
 
+use drivers::keyboard::{get_keyboard_pulse, KeyboardState};
 use fmt::print::print_macros;
 
 use memory::alloc::{alloc, free};
@@ -23,16 +25,12 @@ use types::vec::Vec;
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    let mut vector = Vec::new();
-    vector.push(b'S');
-    vector.push(b'R');
-
-    vector.print(Color::LightGreen);
-
-    new_line();
-    vector.pop();
-
-    vector.print(Color::LightGreen);
+    while true {
+        let state = get_keyboard_pulse();
+        if state[1] == KeyboardState::Pressed as u8 {
+            putc(state[0], Color::LightCyan);
+        }
+    }
     loop {}
 }
 
