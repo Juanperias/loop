@@ -104,6 +104,33 @@ pub fn get_char_from_scan_code(scan_code: u8) -> [u8; 2] {
         0x2C => [b'z', KeyboardState::Pressed as u8],
         0xAC => [b'z', KeyboardState::Released as u8],
 
+        0x03 => [b'2', KeyboardState::Pressed as u8],
+        0x83 => [b'2', KeyboardState::Released as u8],
+
+        0x04 => [b'3', KeyboardState::Pressed as u8],
+        0x84 => [b'3', KeyboardState::Released as u8],
+
+        0x05 => [b'4', KeyboardState::Pressed as u8],
+        0x85 => [b'4', KeyboardState::Released as u8],
+
+        0x06 => [b'5', KeyboardState::Pressed as u8],
+        0x86 => [b'5', KeyboardState::Released as u8],
+
+        0x07 => [b'6', KeyboardState::Pressed as u8],
+        0x87 => [b'6', KeyboardState::Released as u8],
+
+        0x08 => [b'7', KeyboardState::Pressed as u8],
+        0x88 => [b'7', KeyboardState::Released as u8],
+
+        0x09 => [b'8', KeyboardState::Pressed as u8],
+        0x89 => [b'8', KeyboardState::Released as u8],
+
+        0x0A => [b'9', KeyboardState::Pressed as u8],
+        0x8A => [b'9', KeyboardState::Released as u8],
+
+        0x0B => [b'0', KeyboardState::Pressed as u8],
+        0x8B => [b'0', KeyboardState::Released as u8],
+
         0x39 => [b' ', KeyboardState::Pressed as u8],
         0xB9 => [b' ', KeyboardState::Released as u8],
 
