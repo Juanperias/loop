@@ -25,6 +25,7 @@ use types::vec::Vec;
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
+    puts("Welcome to loop kernel", Color::LightCyan);
     while true {
         let state = get_keyboard_pulse();
         if state[1] == KeyboardState::Pressed as u8 {

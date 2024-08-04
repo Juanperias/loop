@@ -1,7 +1,7 @@
 BUILD_DIR?=build
 ASM?=nasm
 ASMFLAGS?=-f elf32
-ELF_LD?=/usr/local/i386elfgcc/bin/i386-elf-ld
+ELF_LD?=i386-elf-ld
 RUST?=rustc
 RUST_FLAGS?=-O --target i686-unknown-linux-gnu --crate-type lib --emit=obj -C link-args=-no-pie -C relocation-model=static
 

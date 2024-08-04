@@ -7,10 +7,10 @@ which provides full control over the system and is programmed entirely in rust.
 
 Loop runs in protected mode, although its bootloader uses some bios interrupts.
 
-To compile the loop you can do a
+To compile the loop you can do in nix
 
 ```bash
-make
+nix develop
 ```
 
 and with this you will get the loop.bin, and if you only want the kernel is in kernel.bin (inside build)
